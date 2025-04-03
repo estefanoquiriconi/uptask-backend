@@ -18,4 +18,16 @@ router.get(
   ProjectController.getProjectById
 );
 
+router.put(
+  '/:id',
+  validateRequest({ params: mongoIdSchema, body: projectSchema }),
+  ProjectController.updateProject
+);
+
+router.delete(
+  '/:id',
+  validateRequest({ params: mongoIdSchema }),
+  ProjectController.deleteProject
+);
+
 export default router;
