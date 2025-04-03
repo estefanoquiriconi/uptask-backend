@@ -1,36 +1,35 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IProject extends Document {
-  readonly projectName: string;
-  readonly clientName: string;
-  readonly description: string;
-  readonly createdAt?: Date;
-  readonly updatedAt?: Date;
+  projectName: string;
+  clientName: string;
+  description: string;
+  tasks: Schema.Types.ObjectId[];
 }
 
-const projectSchema: Schema<IProject> = new Schema(
+const projectSchema = new Schema<IProject>(
   {
     projectName: {
       type: String,
       required: true,
       trim: true,
-      minlength: 3,
-      maxlength: 100,
     },
     clientName: {
       type: String,
       required: true,
       trim: true,
-      minlength: 3,
-      maxlength: 100,
     },
     description: {
       type: String,
       required: true,
       trim: true,
-      minlength: 10,
-      maxlength: 500,
     },
+    tasks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Task',
+      },
+    ],
   },
   {
     timestamps: true,
@@ -38,6 +37,6 @@ const projectSchema: Schema<IProject> = new Schema(
   }
 );
 
-const Project: Model<IProject> = mongoose.model('Project', projectSchema);
+const Project = mongoose.model<IProject>('Project', projectSchema);
 
 export default Project;
