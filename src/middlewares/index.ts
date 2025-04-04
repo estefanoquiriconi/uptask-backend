@@ -1,2 +1,2 @@
 export * from './validateRequest';
-export * from './validateProjectExists';
+export * from './project';

@@ -2,9 +2,9 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export enum TaskStatus {
   PENDING = 'pending',
-  ON_HOLD = 'on_hold',
-  IN_PROGRESS = 'in_progress',
-  UNDER_REVIEW = 'under_review',
+  ON_HOLD = 'onHold',
+  IN_PROGRESS = 'inProgress',
+  UNDER_REVIEW = 'underReview',
   COMPLETED = 'completed',
 }
 

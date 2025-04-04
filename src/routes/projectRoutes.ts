@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ProjectController } from '../controllers/ProjectController';
-import { validateProjectExists, validateRequest } from '../middlewares';
+import { projectExists, validateRequest } from '../middlewares';
 import { projectSchema, mongoIdSchema } from '../validations';
 import tasksRouter from './taskRoutes';
 
@@ -33,7 +33,7 @@ router
 router.use(
   '/:projectId/tasks',
   validateRequest({ params: mongoIdSchema }),
-  validateProjectExists,
+  projectExists,
   tasksRouter
 );
 
