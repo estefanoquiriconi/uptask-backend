@@ -1,56 +1,40 @@
 import { Router } from 'express';
 import { ProjectController } from '../controllers/ProjectController';
-import { TaskController } from '../controllers/TaskController';
-import { validateRequest, validateProjectExists } from '../middlewares';
-import { projectSchema, mongoIdSchema, taskSchema } from '../validations';
+import { validateProjectExists, validateRequest } from '../middlewares';
+import { projectSchema, mongoIdSchema } from '../validations';
+import tasksRouter from './taskRoutes';
 
 const router: Router = Router();
 
-router.post(
-  '/',
-  validateRequest({ body: projectSchema }),
-  ProjectController.createProject
-);
-router.get('/', ProjectController.getAllProject);
+router
+  .route('/')
+  .post(
+    validateRequest({ body: projectSchema }),
+    ProjectController.createProject
+  )
+  .get(ProjectController.getAllProject);
 
-router.get(
-  '/:id',
-  validateRequest({ params: mongoIdSchema }),
-  ProjectController.getProjectById
-);
+router
+  .route('/:id')
+  .get(
+    validateRequest({ params: mongoIdSchema }),
+    ProjectController.getProjectById
+  )
+  .put(
+    validateRequest({ params: mongoIdSchema, body: projectSchema }),
+    ProjectController.updateProject
+  )
+  .delete(
+    validateRequest({ params: mongoIdSchema }),
+    ProjectController.deleteProject
+  );
 
-router.put(
-  '/:id',
-  validateRequest({ params: mongoIdSchema, body: projectSchema }),
-  ProjectController.updateProject
-);
-
-router.delete(
-  '/:id',
-  validateRequest({ params: mongoIdSchema }),
-  ProjectController.deleteProject
-);
-
-/** Routes for tasks **/
-router.post(
-  '/:projectId/tasks',
-  validateRequest({ params: mongoIdSchema, body: taskSchema }),
-  validateProjectExists,
-  TaskController.createTask
-);
-
-router.get(
+/** Task routes (nested resource) **/
+router.use(
   '/:projectId/tasks',
   validateRequest({ params: mongoIdSchema }),
   validateProjectExists,
-  TaskController.getProjectTasks
-);
-
-router.get(
-  '/:projectId/tasks/:taskId',
-  validateRequest({ params: mongoIdSchema }),
-  validateProjectExists,
-  TaskController.getTaskById
+  tasksRouter
 );
 
 export default router;

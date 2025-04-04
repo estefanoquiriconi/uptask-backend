@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-enum TaskStatus {
+export enum TaskStatus {
   PENDING = 'pending',
   ON_HOLD = 'on_hold',
   IN_PROGRESS = 'in_progress',
