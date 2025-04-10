@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 import Project from '../models/Project';
 
+const handleError = (error: unknown, res: Response) => {
+  console.log(error);
+  res.status(500).json({ error: 'Internal server error' });
+};
+
 export class ProjectController {
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body);
 
     try {
       await project.save();
-      res.status(201).json(project);
+      res.status(201).json({ message: 'Proyecto creado', project });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Internal server error' });
+      handleError(error, res);
     }
   };
 
@@ -19,8 +23,7 @@ export class ProjectController {
       const projects = await Project.find();
       res.status(200).json(projects);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Internal server error' });
+      handleError(error, res);
     }
   };
 
@@ -33,14 +36,13 @@ export class ProjectController {
       );
 
       if (!project) {
-        res.status(404).json({ error: 'Project not found' });
+        res.status(404).json({ error: 'Proyecto no encontrado' });
         return;
       }
 
       res.status(200).json(project);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Internal server error' });
+      handleError(error, res);
     }
   };
 
@@ -52,14 +54,13 @@ export class ProjectController {
       });
 
       if (!project) {
-        res.status(404).json({ error: 'Project not found' });
+        res.status(404).json({ error: 'Proyecto no encontrado' });
         return;
       }
 
-      res.status(200).json(project);
+      res.status(200).json({ project, message: 'Proyecto actualizado' });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Internal server error' });
+      handleError(error, res);
     }
   };
 
@@ -69,14 +70,13 @@ export class ProjectController {
       const project = await Project.findByIdAndDelete(id);
 
       if (!project) {
-        res.status(404).json({ error: 'Project not found' });
+        res.status(404).json({ error: 'Proyecto no encontrado' });
         return;
       }
 
-      res.status(200).json({ message: 'Project deleted' });
+      res.status(200).json({ project, message: 'Proyecto eliminado' });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Internal server error' });
+      handleError(error, res);
     }
   };
 }

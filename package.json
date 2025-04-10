@@ -12,10 +12,12 @@
   "license": "ISC",
   "packageManager": "pnpm@10.7.0",
   "dependencies": {
+    "@types/morgan": "^1.9.9",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mongoose": "^8.13.1",
+    "morgan": "^1.10.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
