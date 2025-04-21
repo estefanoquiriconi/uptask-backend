@@ -56,7 +56,7 @@ export class TaskController {
         return;
       }
 
-      res.status(200).json({ task, message: 'Tarea encontrada' });
+      res.status(200).json(task);
     } catch (error) {
       this.handleError(error, res);
     }
